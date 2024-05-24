@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int n, head, totalSeekTime = 0;
+
+    // Read the number of requests from the user
+    printf("Enter the number of requests: ");
+    scanf("%d", &n);
+
+    // Create an array to store the disk requests
+    int requests[n];
+
+    // Read the disk requests from the user
+    printf("Enter the requests: ");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &requests[i]);
+    }
+
+    // Read the initial head position from the user
+    printf("Enter the initial head position: ");
+    scanf("%d", &head);
+
+    // Print the header for the seek sequence
+    printf("Seek Sequence: ");
+
+    // Iterate over each request to find the closest one to the current head position
+    for (int i = 0; i < n; i++) {
+        int minDistance = 1000000, minIndex;
+
+        // Find the request closest to the current head position
+        for (int j = 0; j < n; j++) {
+            if (requests[j] != -1) {
+                // Calculate the distance between the current head position and the request
+                int distance = abs(head - requests[j]);
+                // Update the minimum distance and index if this request is closer
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    minIndex = j;
+                }
+            }
+        }
+
+        // Move the head to the closest request
+        totalSeekTime += minDistance;
+        printf("%d ", requests[minIndex]); // Print the current request in the seek sequence
+        head = requests[minIndex];
+        requests[minIndex] = -1; // Mark this request as serviced
+    }
+
+    // Print the total seek time
+    printf("\nTotal seek time: %d\n", totalSeekTime);
+
+    return 0;
+}
